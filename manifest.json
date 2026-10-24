@@ -1,7 +1,7 @@
 {
     "name": "AutoItemPickup_Updated",
     "version_number": "2.3.1",
-    "website_url": "https://gitlab.com/KubeRoot/ror2-autoitempickup",
+    "website_url": "https://github.com/rfaael3/AutoItemPickup-Updated",
     "description": "Updated fork of KubeRoot's AutoItemPickup: automatically distributes dropped items among players on drop and/or teleport. Host-only, with Risk Of Options support.",
     "dependencies": [
         "bbepis-BepInExPack-5.4.2121",

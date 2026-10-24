@@ -29,7 +29,7 @@ defina a propriedade `RoR2Dir` (e, se for o caso, `BepInExCoreDir` e `MMHookDir`
 edite o bloco `PropertyGroup` no início do `AutoItemPickup.csproj`.
 
 ## Instalando
-O resultado fica em `AutoItemPickup\bin\Release\netstandard2.1\AutoItemPickup.dll`.
+O resultado fica em `AutoItemPickup-Updated\bin\Release\netstandard2.1\AutoItemPickup.dll`.
 Copie para `BepInEx\plugins\AutoItemPickup\` (ou para a pasta do mod no perfil do r2modman).
 
 ## Se algo quebrar depois de uma atualização do jogo
