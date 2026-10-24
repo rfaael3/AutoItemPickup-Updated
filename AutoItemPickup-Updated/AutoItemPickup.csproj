@@ -1,0 +1,121 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>10.0</LangVersion>
+        <Version>2.3.1</Version>
+        <Authors>KubeRoot</Authors>
+        <AssemblyName>AutoItemPickup</AssemblyName>
+    </PropertyGroup>
+
+    <!--
+        As DLLs são lidas direto da instalação do jogo, então sempre batem com a versão atual dele.
+        Se o jogo ou o mod manager estiver em outro lugar, passe as pastas na linha de comando, por exemplo:
+          dotnet build -c Release -p:RoR2Dir="D:\Games\Risk of Rain 2"
+          dotnet build -c Release -p:RoR2Dir="..." -p:BepInExCoreDir="C:\...\r2modman\...\profiles\Dev\BepInEx\core" -p:MMHookDir="C:\...\profiles\Dev\BepInEx\plugins\MMHOOK"
+        MMHOOK_RoR2.dll só existe depois de rodar o jogo uma vez com BepInEx + HookGenPatcher instalados.
+    -->
+    <PropertyGroup>
+        <RoR2Dir Condition="'$(RoR2Dir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2</RoR2Dir>
+        <ManagedDir Condition="'$(ManagedDir)' == ''">$(RoR2Dir)\Risk of Rain 2_Data\Managed</ManagedDir>
+        <BepInExCoreDir Condition="'$(BepInExCoreDir)' == ''">$(RoR2Dir)\BepInEx\core</BepInExCoreDir>
+        <MMHookDir Condition="'$(MMHookDir)' == ''">$(RoR2Dir)\BepInEx\plugins\MMHOOK</MMHookDir>
+    </PropertyGroup>
+
+    <!--
+        Menu dentro do jogo (Risk Of Options): opcional. Instale o "Risk_Of_Options" no perfil do r2modman.
+        Se o RiskOfOptions.dll for encontrado, o menu é compilado; se não, o mod compila normalmente sem ele.
+        Se a DLL estiver em outra pasta: -p:RiskOfOptionsDll="C:\...\RiskOfOptions.dll"
+    -->
+    <PropertyGroup>
+        <RiskOfOptionsDll Condition="'$(RiskOfOptionsDll)' == ''">$(BepInExCoreDir)\..\plugins\Rune580-Risk_Of_Options\RiskOfOptions.dll</RiskOfOptionsDll>
+    </PropertyGroup>
+    <PropertyGroup Condition="Exists('$(RiskOfOptionsDll)')">
+        <DefineConstants>$(DefineConstants);RISKOFOPTIONS</DefineConstants>
+    </PropertyGroup>
+    <ItemGroup Condition="Exists('$(RiskOfOptionsDll)')">
+        <Reference Include="RiskOfOptions">
+            <HintPath>$(RiskOfOptionsDll)</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    <Target Name="NoteRiskOfOptions" BeforeTargets="CoreCompile">
+        <Message Condition="Exists('$(RiskOfOptionsDll)')" Importance="high"
+                 Text="RiskOfOptions encontrado: o menu dentro do jogo será incluído." />
+        <Warning Condition="!Exists('$(RiskOfOptionsDll)')"
+                 Text="RiskOfOptions.dll não encontrada em '$(RiskOfOptionsDll)': compilando SEM o menu dentro do jogo." />
+    </Target>
+
+    <Target Name="CheckGameLibs" BeforeTargets="ResolveAssemblyReferences">
+        <Error Condition="!Exists('$(ManagedDir)\RoR2.dll')"
+               Text="RoR2.dll não encontrada em '$(ManagedDir)'. Passe -p:RoR2Dir=&quot;&lt;pasta do Risk of Rain 2&gt;&quot;." />
+        <Error Condition="!Exists('$(BepInExCoreDir)\BepInEx.dll')"
+               Text="BepInEx.dll não encontrada em '$(BepInExCoreDir)'. Instale o BepInEx ou passe -p:BepInExCoreDir=&quot;...&quot;." />
+        <Error Condition="!Exists('$(MMHookDir)\MMHOOK_RoR2.dll')"
+               Text="MMHOOK_RoR2.dll não encontrada em '$(MMHookDir)'. Rode o jogo uma vez com HookGenPatcher instalado ou passe -p:MMHookDir=&quot;...&quot;." />
+    </Target>
+
+    <ItemGroup>
+        <!-- BepInEx / MonoMod -->
+        <Reference Include="BepInEx">
+            <HintPath>$(BepInExCoreDir)\BepInEx.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Mono.Cecil">
+            <HintPath>$(BepInExCoreDir)\Mono.Cecil.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="MonoMod.RuntimeDetour">
+            <HintPath>$(BepInExCoreDir)\MonoMod.RuntimeDetour.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="MonoMod.Utils">
+            <HintPath>$(BepInExCoreDir)\MonoMod.Utils.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="MMHOOK_RoR2">
+            <HintPath>$(MMHookDir)\MMHOOK_RoR2.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+
+        <!-- Jogo -->
+        <Reference Include="RoR2">
+            <HintPath>$(ManagedDir)\RoR2.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="HGCSharpUtils">
+            <HintPath>$(ManagedDir)\HGCSharpUtils.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Facepunch.Steamworks">
+            <HintPath>$(ManagedDir)\Facepunch.Steamworks.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="com.unity.multiplayer-hlapi.Runtime">
+            <HintPath>$(ManagedDir)\com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+
+        <!-- Unity -->
+        <Reference Include="Unity.TextMeshPro">
+            <HintPath>$(ManagedDir)\Unity.TextMeshPro.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>$(ManagedDir)\UnityEngine.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(ManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.PhysicsModule">
+            <HintPath>$(ManagedDir)\UnityEngine.PhysicsModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>$(ManagedDir)\UnityEngine.UI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+</Project>
