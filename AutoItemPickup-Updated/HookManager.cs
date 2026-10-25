@@ -18,6 +18,7 @@ public class HookManager
         RegisterHandler<ScrapperTargetHandler>();
         RegisterHandler<CommandTargetHandler>();
         RegisterHandler<CommandHandler>();
+        RegisterHandler<CommandQueueHandler>();
         RegisterHandler<ItemHandler>();
     }
 

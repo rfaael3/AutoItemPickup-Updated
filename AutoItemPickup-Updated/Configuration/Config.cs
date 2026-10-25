@@ -26,6 +26,8 @@ public class Config
 
     public ConfigEntry<bool> teleportCommandOnDrop;
     public ConfigEntry<bool> teleportCommandOnTeleport;
+    public ConfigEntry<bool> autoOpenQueuedCommand;
+    public ConfigEntry<float> queuedCommandRadius;
 
     private bool OnDropReady => OnDrop?.Ready ?? false;
     private bool OnTeleportReady => OnTeleport?.Ready ?? false;
@@ -73,6 +75,14 @@ Afterwards, any new essences that do not fit the requirements for OnDrop distrib
         teleportCommandObeyTier = config.Bind("Command", "UseTierWhitelist", true,
             @"Should Command essence teleportation be restricted by item tiers?
 If enabled, when deciding if a command essence should be teleported, its tier will be compared against the OnDrop/OnTeleport tier whitelist.");
+
+        autoOpenQueuedCommand = config.Bind("Command", "AutoOpenQueuedCommand", true,
+            "Automatically interact with nearby permanent Command essences when Nick's Command Queue Flavour has an available queued choice. " +
+            "Uses your local queue, including reservations and repeat mode. Empty/unavailable queues remain manual. " +
+            "Each player who wants this feature needs both mods installed. Independent of the item distribution and essence teleport filters.");
+        queuedCommandRadius = config.Bind("Command", "QueuedCommandRadius", 8f,
+            new ConfigDescription("Maximum distance in meters for automatic Command interaction, also limited by the game's prompt cutoff distance.",
+                new AcceptableValueRange<float>(1f, 30f)));
 
         config.SettingChanged += ConfigOnSettingChanged;
 

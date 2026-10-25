@@ -1,3 +1,22 @@
+### 2.4.2
+- Display the mod's Thunderstore icon in Risk Of Options
+- Embed the icon in the plugin so it works without a separate image file; icon loading failures do not prevent settings from being registered
+
+### 2.4.1
+- Fix automatic Command interaction stopping after the first item with LookingGlass: its window blur hook expected a panel after Nick's queue selected without displaying one
+- Route only automatically opened, queued essences directly through Nick's queued-choice coroutine, outside panel effects; retain the normal UI chain for manual interactions
+- Keep reservations, next-frame submission and pickup accounting in Nick's own implementation
+- Retry after transient interaction errors instead of disabling automatic interaction for the entire session; throttle repeated error messages
+- Add regression coverage that reproduces the panel-effect exception and checks consecutive essences, the live toggle, manual fallback, range and recovery
+
+### 2.4.0
+- Add optional automatic interaction with nearby permanent Command essences when Nick's Command Queue Flavour has an available queued choice
+- Add `AutoOpenQueuedCommand` (enabled by default) and `QueuedCommandRadius` (8 meters by default) to the config and Risk Of Options; settings apply during a run
+- Preserve CommandQueue's reservations, repeat mode, LookingGlass selection handling and pickup-based queue consumption
+- Leave empty/unavailable queues and temporary/rental essences manual; do not interrupt another active selection
+- Use each player's local queue and normal network interaction; remote players need both mods locally to use this feature
+- Keep CommandQueue and Risk Of Options optional
+
 ### 2.3.1
 - Hooks are now registered independently: if a game update breaks one of them, only that feature is disabled and a clear error is logged, instead of the whole mod failing to load
 - IL patches use `TryGotoNext` and log which method changed instead of throwing

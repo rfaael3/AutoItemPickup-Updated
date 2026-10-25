@@ -20,9 +20,10 @@ using UnityEngine.Networking;
 
 namespace AutoItemPickup;
 
-[BepInPlugin("com.rfaael.autoitempickup.updated", "AutoItemPickup Updated", "2.3.1")]
+[BepInPlugin("com.rfaael.autoitempickup.updated", "AutoItemPickup Updated", "2.4.2")]
 // Soft dependency: makes BepInEx load Risk Of Options first when it is installed, but the mod works without it
 [BepInDependency("com.rune580.riskofoptions", BepInDependency.DependencyFlags.SoftDependency)]
+[BepInDependency("com.kuberoot.commandqueue", BepInDependency.DependencyFlags.SoftDependency)]
 public class AutoItemPickup : BaseUnityPlugin
 {
     private static readonly MethodInfo GenericPickupController_AttemptGrant =

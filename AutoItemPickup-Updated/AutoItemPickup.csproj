@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <LangVersion>10.0</LangVersion>
-        <Version>2.3.1</Version>
+        <Version>2.4.2</Version>
         <Authors>KubeRoot</Authors>
         <AssemblyName>AutoItemPickup</AssemblyName>
     </PropertyGroup>
@@ -34,6 +34,11 @@
         <DefineConstants>$(DefineConstants);RISKOFOPTIONS</DefineConstants>
     </PropertyGroup>
     <ItemGroup Condition="Exists('$(RiskOfOptionsDll)')">
+        <EmbeddedResource Include="..\icon.png" LogicalName="AutoItemPickup.icon.png" />
+        <Reference Include="UnityEngine.ImageConversionModule">
+            <HintPath>$(ManagedDir)\UnityEngine.ImageConversionModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
         <Reference Include="RiskOfOptions">
             <HintPath>$(RiskOfOptionsDll)</HintPath>
             <Private>False</Private>

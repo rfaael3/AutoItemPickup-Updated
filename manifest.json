@@ -1,8 +1,8 @@
 {
     "name": "AutoItemPickup_Updated",
-    "version_number": "2.3.1",
+    "version_number": "2.4.2",
     "website_url": "https://github.com/rfaael3/AutoItemPickup-Updated",
-    "description": "Updated fork of KubeRoot's AutoItemPickup: automatically distributes dropped items among players on drop and/or teleport. Host-only, with Risk Of Options support.",
+    "description": "Automatically distributes items on drop and/or teleport. Optional nearby Command essence auto-opening with Nick's Command Queue Flavour, configurable in Risk Of Options.",
     "dependencies": [
         "bbepis-BepInExPack-5.4.2121",
         "RiskofThunder-HookGenPatcher-1.2.9"
